@@ -1,0 +1,59 @@
+<!-- web_dashboard/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>College Network Monitor</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>📡 College Network Monitor Dashboard</h1>
+
+  <h2>🔍 Connected Devices (from ARP + OS Fingerprinting)</h2>
+  <table>
+    <tr>
+      <th>IP</th><th>MAC</th><th>Vendor</th><th>TTL</th><th>WinSize</th><th>OS Guess</th>
+    </tr>
+    {% for device in devices %}
+    <tr>
+      <td>{{ device.IP }}</td>
+      <td>{{ device.MAC }}</td>
+      <td>{{ device.Vendor }}</td>
+      <td>{{ device.TTL }}</td>
+      <td>{{ device.WinSize }}</td>
+      <td>{{ device.OS }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>📊 Data Usage Per IP</h2>
+  <table>
+    <tr><th>IP</th><th>Sent (Bytes)</th><th>Received (Bytes)</th></tr>
+    {% for row in usage %}
+    <tr>
+      <td>{{ row.IP }}</td>
+      <td>{{ row.Sent }}</td>
+      <td>{{ row.Received }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>🚨 Spoofing Alerts</h2>
+  {% if alerts %}
+  <table>
+    <tr><th>IP</th><th>Original MAC</th><th>Current MAC</th><th>Alert</th></tr>
+    {% for a in alerts %}
+    <tr>
+      <td>{{ a.IP }}</td>
+      <td>{{ a["Original MAC"] }}</td>
+      <td>{{ a["Current MAC"] }}</td>
+      <td style="color:red">{{ a.Alert }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p style="color:green;">✅ No spoofing detected.</p>
+  {% endif %}
+
+</body>
+</html>
